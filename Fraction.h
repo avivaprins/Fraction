@@ -4,6 +4,7 @@
  *  @date 12/27/2018
  * 
  *  The fractions are stored in reduced form.
+ *  TODO: consider converting to and from double
  */
 
 #ifndef FRACTION_H
@@ -21,10 +22,10 @@ public:
 	 *  @return out so that << can be called consecutively
 	 */
     friend std::ostream& operator<<(std::ostream& out, const Fraction& f) {
-		if(f.bottom == 1){
+		if(f.bottom == 1) {
 			out << f.top;
 		}
-		else{
+		else {
 			out << f.top << "/" << f.bottom;
 		}
 		return out;
@@ -56,6 +57,10 @@ public:
 	template<typename T, typename B>
 	Fraction<F>(T numerator, B denominator); // numerator/denominator
 
+	// Basic math
+	Fraction& operator+=(const Fraction& value); // Adds value to lhs and returns lhs
+	Fraction& operator-=(const Fraction& value); // Subtracts value from lhs and returns lhs
+	Fraction& operator*=(const Fraction& value); // Multiplies value to lhs and returns lhs
 	Fraction& operator/=(const Fraction& value); // Divides value from lhs and returns lhs
 
 private:
@@ -74,7 +79,7 @@ template<typename F>
 inline Fraction<F>::Fraction() : top(0), bottom(1) {}
 
 /** Constructor with one parameter
- *  @numerator is the numerator of the fraction (denominator defaults to 1)
+ *  @param numerator is the numerator of the fraction (denominator defaults to 1)
  *  TODO: make this more robust for type conflicts (type casting, error messages)
  */
 template<typename F>
@@ -82,8 +87,8 @@ template<typename T>
 inline Fraction<F>::Fraction(T numerator) : top(numerator), bottom(1) {}
 
 /** Constructor with two parameters
- *  @numerator is the top of the fraction
- *  @denominator is the bottom of the fraction
+ *  @param numerator is the top of the fraction
+ *  @param denominator is the bottom of the fraction
  *  TODO: make this more robust for type conflicts (type casting, error messages)
  */
 template<typename F>
@@ -92,8 +97,45 @@ inline Fraction<F>::Fraction(T numerator, B denominator) : top(numerator), botto
 	reduce();
 }
 
+/** Adds value to lhs
+ *  @param value is the value being added to lhs
+ *  @return reference to lhs
+ */
+template<typename F>
+Fraction<F>& Fraction<F>::operator+=(const Fraction& value){
+	(top *= value.bottom) += value.top*bottom;
+	bottom *= value.bottom;
+	reduce();
+	return *this;
+}
+
+/** Subtracts value from lhs
+ *  @param value is the value being subtracted from lhs
+ *  @return reference to lhs
+ */
+template<typename F>
+Fraction<F>& Fraction<F>::operator-=(const Fraction& value){
+	(top *= value.bottom) -= value.top*bottom;
+	bottom *= value.bottom;
+	reduce();
+	return *this;
+}
+
+/** Multiplies value to lhs
+ *  @param value is the value being multiplied
+ *  @return reference to lhs
+ */
+template<typename F>
+Fraction<F>& Fraction<F>::operator*=(const Fraction& value){
+	top *= value.top;
+	bottom *= value.bottom;
+	reduce();
+	return *this;
+}
+
 /** Divides value from lhs
- *  @param value the value being divided
+ *  @param value is the value being divided
+ *  @return reference to lhs
  */
 template<typename F>
 Fraction<F>& Fraction<F>::operator/=(const Fraction& value) {
@@ -103,31 +145,49 @@ Fraction<F>& Fraction<F>::operator/=(const Fraction& value) {
 	return *this;
 }
 
-/** Greatest Common Devisor
+/** Greatest Common Divisor
  *  @param a first value
  *  @param b second value
- *  @return the greatest common devisor between a and b
+ *  @return the greatest common divisor between a and b
  *  This function utilizes the Euclidean algorithm for finding the gcd.
  */
 template<typename T>
 T gcd(T a, T b) {
-	if(a==b){
+	if(a==b) {
 		return a;
 	}
-	else if(a>b){
+	else if(a>b) {
 		return gcd(a-b, b);
 	}
-	else{
+	else {
 		return gcd(a, b-a);
 	}
 }
 
 /** Reduces the fraction
- *  TODO: consider negative numbers, dividing by zero, and other fun stuff
+ *  Gives warnings for t/0 and 0/0
  */
 template<typename F>
-void Fraction<F>::reduce() {
-	F divisor = gcd(top, bottom);
-	top /= divisor;
-	bottom /= divisor;
+void Fraction<F>::reduce() { // 0/5 -> 0/1
+	if(top == 0 && bottom != 0) {
+		bottom = 1;
+	}
+	else if(top == 0 && bottom == 0) { // 0/0 -> warning
+		std::cout << "Warning: " << *this << std::endl;
+	}
+	else if(bottom == 0) { // 5/0 -> warning
+		std::cout << "Warning: " << *this << std::endl;
+	}
+	else { // 5/5 -> 1/1
+		F divisor = gcd(std::abs(top), std::abs(bottom));
+		top /= divisor;
+		bottom /= divisor;
+
+		// if -t/b or t/b, done.
+		// if t/-b or -t/-b:
+		if(bottom < 0) {
+			top = -top;
+			bottom = -bottom;
+		}
+	}
 }

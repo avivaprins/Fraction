@@ -8,11 +8,9 @@
 #include "Fraction.h"
 
 int main(){
-    Fraction<int> a;
+    Fraction<int> a(1,2);
     Fraction<int> b(3,2);
-    Fraction<int> c(2, 4);
-    std::cout<<a <<std::endl <<b <<std::endl << c <<std::endl;
-    b/=c;
-    std::cout<<b;
+    a/=b;
+    std::cout << a << std::endl;
     return 0;
 }
