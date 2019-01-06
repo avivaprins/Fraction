@@ -6,11 +6,31 @@
 
 #include <iostream>
 #include "Fraction.h"
+#include "Integer.h"
 
 int main(){
     Fraction<int> a(1,2);
     Fraction<int> b(3,2);
-    a/=b;
-    std::cout << -a << std::endl;
+    std::cout << a+b << std::endl;
+    std::cout << a-b << std::endl;
+    std::cout << a*b << std::endl;
+    std::cout << a/b << std::endl;
+    std::cout << (a>b) << std::endl;
+    std::cout << (a<b) << std::endl;
+
+    Integer x = 1;
+    Integer y = 2;
+    Integer z = 3;
+
+    // Fraction<Integer> c(x,y);
+    // Fraction<Integer> d(z,y);
+    // a = c;
+    // b = d;
+    // std::cout << a+b << std::endl;
+    // std::cout << a-b << std::endl;
+    // std::cout << a*b << std::endl;
+    // std::cout << a/b << std::endl;
+    // std::cout << (a>b) << std::endl;
+    // std::cout << (a<b) << std::endl;
     return 0;
 }
