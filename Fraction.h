@@ -62,6 +62,18 @@ public:
 	Fraction& operator-=(const Fraction& value); // Subtracts value from lhs and returns lhs
 	Fraction& operator*=(const Fraction& value); // Multiplies value to lhs and returns lhs
 	Fraction& operator/=(const Fraction& value); // Divides value from lhs and returns lhs
+	Fraction operator-() const; // returns -a
+
+	// Increment and decrement
+	Fraction& operator++();           // Prefix increment
+	Fraction operator++(int unused);  // Postfix increment
+	Fraction& operator--();           // Prefix decrement
+	Fraction operator--(int unused);  // Postfix decrement
+
+	// Comparisons
+	bool operator<(const Fraction& rhs) const;	 // True if lhs < rhs
+	bool operator==(const Fraction& rhs) const;  // True if lhs == rhs
+
 
 private:
 	void reduce();
@@ -144,6 +156,82 @@ Fraction<F>& Fraction<F>::operator/=(const Fraction& value) {
 	reduce();
 	return *this;
 }
+
+/** Negates a fraction value
+ *  @return the negated value
+ */
+template<typename F>
+Fraction<F> Fraction<F>::operator-() const{
+	Fraction a = *this;
+	a.top = -top;
+	return a;
+}
+
+// TODO: more basic math will go here later
+
+/** Prefix increment (adds 1)
+ *  @return reference to lhs
+ */
+template<typename F>
+Fraction<F>& Fraction<F>::operator++() {
+	top += bottom;
+	reduce();
+	return *this;
+}
+
+/** Postfix increment (adds 1)
+ *  @param unused required for postfix version
+ *  @return reference to lhs
+ */
+template<typename F>
+Fraction<F> Fraction<F>::operator++(int unused) {
+	Fraction clone(*this);
+	++(*this);
+	return clone;
+}
+
+/** Prefix decrement (subtracts 1)
+ *  @return reference to lhs
+ */
+template<typename F>
+Fraction<F>& Fraction<F>::operator--() {
+	top -= bottom;
+	reduce();
+	return *this;
+}
+
+/** Postfix decrement (subtracts 1)
+ *  @param unused required for postfix version
+ *  @return reference to lhs
+ */
+template<typename F>
+Fraction<F> Fraction<F>::operator--(int unused) {
+	Fraction clone(*this);
+	--(*this);
+	return clone;
+}
+
+/** Less than operator: true if lhs < rhs
+ *  @param rhs
+ *  @return true if lhs < rhs
+ *  Assumes fractions are in reduced form
+ */
+template<typename F>
+bool Fraction<F>::operator<(const Fraction& rhs) const {
+	return (*this.top *= rhs.bottom) < (*this.bottom*=rhs.top);
+}
+
+/** Equality: true if lhs == rhs
+ *  @param rhs
+ *  @return true if lhs == rhs
+ *  Assumes fractions are in reduced form
+ */
+template<typename F>
+bool Fraction<F>::operator==(const Fraction& rhs) const {
+	return (*this.top == rhs.top) && (*this.bottom==rhs.bottom);
+}
+
+// TODO: more comparisons will go here later
 
 /** Greatest Common Divisor
  *  @param a first value

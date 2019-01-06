@@ -11,6 +11,6 @@ int main(){
     Fraction<int> a(1,2);
     Fraction<int> b(3,2);
     a/=b;
-    std::cout << a << std::endl;
+    std::cout << -a << std::endl;
     return 0;
 }
