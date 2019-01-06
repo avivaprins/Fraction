@@ -320,6 +320,17 @@ Integer Integer::operator+() const {
 	return a;
 }
 
+/** Returns the magnitude of the implicit parameter
+    @return the magnitude of the implicit parameter
+*/
+Integer Integer::abs() const {
+	Integer a;
+	a.bit = bit;
+	a.sign = 0;
+	
+	return a;
+}
+
 /** Prints the lhs in base 10: "####" if positive, and "-####" if negative
     @param out specifies the type of output: cout or outputData
 */

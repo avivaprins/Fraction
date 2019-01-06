@@ -22,6 +22,7 @@ int main(){
     Integer y = 2;
     Integer z = 3;
 
+    // Still on the to do list:
     // Fraction<Integer> c(x,y);
     // Fraction<Integer> d(z,y);
     // a = c;
