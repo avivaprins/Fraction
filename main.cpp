@@ -6,16 +6,13 @@
 
 #include <iostream>
 #include "Fraction.h"
-//#include "Fraction.cpp"
 
 int main(){
     Fraction<int> a;
-    Fraction<int> b(2);
-    Fraction<int> c(3, 4);
-    std::cout<<"Hello World"<<std::endl;
+    Fraction<int> b(3,2);
+    Fraction<int> c(2, 4);
     std::cout<<a <<std::endl <<b <<std::endl << c <<std::endl;
-    Fraction<int> f;
-    std::cin >> f;
-    std::cout<<f;
+    b/=c;
+    std::cout<<b;
     return 0;
 }

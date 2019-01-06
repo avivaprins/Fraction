@@ -41,7 +41,7 @@ Integer operator>>(Integer& a, const unsigned int& increment); // Returns a shif
 #include <string>
 
 /** Output operator <<
-	@param out allows std::cout and outputData output type
+	@param out allows std::cout, etc output types
 	@param i accepts an Integer type output
 	@return out so that << can be called consecutively
 */
@@ -51,7 +51,7 @@ std::ostream& operator<<(std::ostream& out, const Integer& i) {
 }
 
 /** Input operator >>
-	@param in allows std::cin and inputData input type
+	@param in allows std::cin, etc input types
 	@param i accepts an Integer type input
 	@return in so that >> can be called consecutively
 */
@@ -215,7 +215,7 @@ Integer& Integer::operator+=(const Integer& value) {
 	return (*this);
 }
 
-/** Subtracts value to lhs
+/** Subtracts value from lhs
     @param value the value being subtracted, in base 2
 */
 Integer& Integer::operator-=(const Integer& value) {

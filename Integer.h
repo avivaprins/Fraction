@@ -43,6 +43,7 @@ public:
 	Integer& operator+=(const Integer& value); // Adds value to lhs and returns lhs
 	Integer& operator-=(const Integer& value); // Subtracts value from lhs and returns lhs
 	Integer& operator*=(const Integer& value); // Multiplies value to lhs and returns lhs
+	//TODO: divide Integers
 
 	Integer& operator++();			// Prefix increment
 	Integer operator++(int unused); // Postfix increment
